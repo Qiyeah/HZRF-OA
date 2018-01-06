@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<tlib-version>1.0</tlib-version>
+	<short-name>str</short-name>
+	<function>
+		<description>字符串连接</description>
+		<name>append</name>
+		<function-class>com.zhilian.util.ArrayUtils</function-class>
+		<function-signature>String append(java.lang.Object, java.lang.Object)</function-signature>
+		<example>${str:append(obj1, obj2)}</example>
+	</function>
+	
+	<function>
+		<description>字符串连接</description>
+		<name>appendmore</name>
+		<function-class>com.zhilian.util.ArrayUtils</function-class>
+		<function-signature>String appendmore(java.lang.Object, java.lang.Object, java.lang.Object)</function-signature>
+		<example>${str:appendmore(obj1, obj2,obj3)}</example>
+	</function>
+
+    <function>
+        <description>字符串包含比较</description>
+        <name>arraycontains</name>
+        <function-class>com.zhilian.util.ArrayUtils</function-class>
+        <function-signature>Boolean arrayContains(java.lang.String, java.lang.Object)</function-signature>
+        <example>${str:arraycontains(obj1, obj2)}</example>
+    </function>
+
+    <function>
+        <description>翻译部门IDs</description>
+        <name>findDeptnames</name>
+        <function-class>com.zhilian.model.T_Department</function-class>
+        <function-signature>String findDeptnames(java.lang.String)</function-signature>
+        <example>${str:findDeptnames(obj1)}</example>
+    </function>
+
+
+</taglib>

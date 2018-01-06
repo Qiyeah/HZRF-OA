@@ -1,0 +1,101 @@
+package com.oa.controller.kit;
+
+
+import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
+import com.jfinal.core.Controller;
+import com.jfinal.ext.interceptor.NotAction;
+import com.jfinal.kit.HttpKit;
+import com.jfinal.kit.JsonKit;
+import com.oa.controller.json.AccessToken;
+import com.oa.util.ReturnCode;
+
+/**
+ * ApiBase Controller
+ * @Author Andersen
+ * mail: yawen199@163.com
+ * Date: 2016-9-7 10:56
+ */
+public abstract class ApiBase extends Controller {
+    private String inMsgJson = null;		// 本次请求 json数据
+    private InMsg inMsg = null;			// 本次请求 json 解析后的 InMsg 对象
+    //设置inMsgJson
+    public void setInMsgJson(String inMsgJson) {
+        this.inMsgJson = inMsgJson;
+    }
+
+    @Clear
+    //@Before(ApiInterceptor.class)
+    public void index(){
+        // 开发模式输出微信服务发送过来的  xml 消息
+        /*if (ApiConfigKit.isDevMode()) {
+            System.out.println("接收消息:");
+            System.out.println(getInMsgJson());
+        }*/
+        InMsg msg = getInMsg();
+        if(null != msg){
+            // 解析消息并根据消息类型分发到相应的处理方法
+            if (msg instanceof InQueryMsg)
+                processInQueryMsg((InQueryMsg) msg);
+            else if (msg instanceof InSaveMsg)
+                processInSaveMsg((InSaveMsg) msg);
+            else if (msg instanceof InDeleteMsg)
+                processInDeleteMsg((InDeleteMsg) msg);
+        }else{
+            // TODO 返回消息提示出错
+            AccessToken accessToken = new AccessToken();
+            accessToken.setErrCode(40008);
+            accessToken.setErrMsg(ReturnCode.get(40008));
+            renderJson(JsonKit.toJson(accessToken));
+        }
+    }
+
+    // 处理查询消息
+    protected abstract void processInQueryMsg(InQueryMsg msg);
+
+    // 处理保存消息
+    protected abstract void processInSaveMsg(InSaveMsg msg);
+
+    // 处理删除消息
+    protected abstract void processInDeleteMsg(InDeleteMsg msg);
+
+    @Before(NotAction.class)
+    public String getInMsgJson() {
+        if (inMsgJson == null) {
+            inMsgJson = HttpKit.readData(getRequest());
+        }
+        return inMsgJson;
+    }
+
+    @Before(NotAction.class)
+    public InMsg getInMsg() {
+        if (inMsg == null){
+            String msg = getInMsgJson();
+            if(msg.startsWith("\"")){
+        	msg = msg.substring(1, msg.length()-1).replaceAll("\\\\", "");
+            }
+            inMsg = InMsgParser.parse(msg);
+        }
+        return inMsg;
+    }
+
+    /**
+     * 在接收到客户端的 InMsg 消息后后响应 OutMsg 消息
+     */
+    public void render(String outMsgJson) {
+        // 开发模式向控制台输出即将发送的 OutMsg 消息的 xml 内容
+        if (ApiConfigKit.isDevMode()) {
+            System.out.println("发送消息:");
+            System.out.println(outMsgJson);
+            System.out.println("--------------------------------------------------------------------------------\n");
+        }
+
+        // 是否需要加密消息
+        //if (ApiConfigKit.getApiConfig().isEncryptMessage()) {
+        //    String encodingAesKey = "InVjlo7czsOWrCSmTPgEUXBzlFnmqpNMQU3ZfilULHyHZiRjVUhxxWpexhYH6f4i";
+        //    outMsgJson = AESKit.msgEncrypt(outMsgJson,encodingAesKey);
+        //}
+
+        renderText(outMsgJson, "application/json");
+    }
+}

@@ -1,0 +1,186 @@
+@charset "utf-8";
+
+.icon_green {
+	color: green;
+}
+
+td.left {
+	text-align: left;
+}
+
+td.right {
+	text-align: right;
+}
+
+td.center {
+	text-align: center;
+}
+
+input.input98 {
+	width: 98%;
+	line-height: 20px;
+}
+
+td.summary {
+	border: 1px solid black;
+	font-size: 10pt;
+	padding: 5px;
+}
+
+td.link {
+	color: #16669e;
+}
+
+td.titles {
+	text-align: center;
+	font-weight: bold;
+}
+/*wordInfo Table*/
+table.wordInfo {
+	border-collapse: collapse;
+	border: none;
+	width: 100%;
+}
+
+table.wordInfo tr {
+	height: 30px;
+}
+
+table.wordInfo td {
+	border: solid #888 1px;
+	line-height: 15px;
+}
+
+table.wordInfo td.title {
+	text-align: center;
+	font-weight: bold;
+	background-color: #F1F9FF;
+}
+
+table.wordInfo td.content {
+	text-align: center;
+	font-weight: bold;
+}
+
+table.wordInfo td input {
+	border: 0px;
+}
+
+table.wordInfo td textarea {
+	border: 0px;
+}
+
+i.num {
+	position: absolute;
+	width: 23px;
+	height: 18px;
+	top: -4px;
+	right: 7px;
+	display: block;
+	padding: 2px;
+	color: #fff;
+	font-weight: bold;
+	border-radius: 100%;
+	background: #f00;
+}
+
+#cal {
+	width: 434px;
+	border: 1px solid #c3d9ff;
+	font-size: 12px;
+	margin: 0px
+}
+
+#cal #top {
+	height: 29px;
+	line-height: 29px;
+	background: #e7eef8;
+	color: #003784;
+	padding-left: 70px
+}
+
+#cal #top select {
+	font-size: 12px
+}
+
+#cal #top input {
+	padding: 0
+}
+
+#cal ul#wk {
+	margin: 0;
+	padding: 0;
+	height: 25px
+}
+
+#cal ul#wk li {
+	float: left;
+	width: 60px;
+	text-align: center;
+	line-height: 25px;
+	list-style: none
+}
+
+#cal ul#wk li b {
+	font-weight: normal;
+	color: #c60b02
+}
+
+#cal #cm {
+	clear: left;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px dotted #ddd;
+	position: relative
+}
+
+#cal #cm .cell {
+	position: absolute;
+	width: 42px;
+	height: 36px;
+	text-align: center;
+	margin: 0 0 0 9px
+}
+
+#cal #cm .cell .so {
+	font: bold 16px arial;
+}
+
+#cal #bm {
+	text-align: right;
+	height: 12px;
+	line-height: 12px;
+	padding: 0 13px 0 0
+}
+
+#cal #bm a {
+	color: 7977ce
+}
+
+#cal #fd {
+	display: none;
+	position: absolute;
+	border: 1px solid #dddddf;
+	background: #feffcd;
+	padding: 10px;
+	line-height: 21px;
+	width: 150px
+}
+
+#cal #fd b {
+	font-weight: normal;
+	color: #c60a00
+}
+
+<!--[if IE]>
+#cal #top {
+	padding-top: 4px
+}
+
+#cal #top input {
+	width: 65px
+}
+
+#cal #fd {
+	width: 170px
+}
+<![Endif]-->

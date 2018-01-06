@@ -1,0 +1,21 @@
+2017年3月28日18:34:35
+// Andersen
+1. t_attachment表新增字段
+ALTER TABLE [dbo].[t_attachment]
+ADD [tempId] varchar(255) NULL 
+GO
+
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N't_attachment', 
+'COLUMN', N'tempId')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'临时ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N't_attachment'
+, @level2type = 'COLUMN', @level2name = N'tempId'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'临时ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N't_attachment'
+, @level2type = 'COLUMN', @level2name = N'tempId'
+GO

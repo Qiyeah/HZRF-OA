@@ -1,0 +1,11 @@
+##-------------------------------------------------
+## SQLServer
+##-------------------------------------------------
+jdbc.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+jdbc.url=jdbc:sqlserver://192.168.9.124:1433;DatabaseName=hzrf-oa
+#jdbc.url=jdbc:sqlserver://127.0.0.1:1433;DatabaseName=hzrf-oa
+jdbc.username=sa
+jdbc.password=123456
+jdbc.dbType=sqlserver
+jdbc.sql=false
+jdbc.key=mwNjKdX4UFohXV4jEFJJBTkuZWaWV6VT

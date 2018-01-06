@@ -1,0 +1,245 @@
+package com.oa.util;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+/**
+ * 发送短信
+ */
+public class SMSUtil {
+
+    private static int TIME_OUT = 30 * 1000;
+    private static final String ERROR = "ERROR";
+
+    private static String appurl = "http://120.27.144.245:9999/smshttp";
+    private static String appid = "102814";
+    private static String appname = "hzsrmfkb";
+    private static String appsecret = "hzsrmfkb@1";
+
+    private static String URL = "https://sms.189ek.com/yktsms/send";
+    private static String APPID = "fBRdCqR0JEtTnF5XRRnJYJ2lO4l6JDtd";
+    private static String APPKEY = "YjoOoC98EKlAflHYpm32cFjTbXY4023X";
+
+    /**
+     * 发送请求数据到服务端接口地址
+     * 
+     * @param urlstr
+     * @param postdata
+     * @return
+     */
+    private static String sendRequest(String urlstr, String postdata) {
+
+	StringBuilder tempStr = new StringBuilder();
+
+	InputStream in = null;
+	BufferedReader rd = null;
+	HttpURLConnection urlConn = null;
+	try {
+	    URL url = new URL(urlstr);
+	    urlConn = (HttpURLConnection) url.openConnection();
+
+	    urlConn.setRequestMethod("POST");
+	    urlConn.setDoOutput(true);
+	    urlConn.setReadTimeout(TIME_OUT);
+	    // 组装请求包体json
+	    urlConn.getOutputStream().write(postdata.getBytes("utf-8"));
+	    urlConn.getOutputStream().flush();
+	    in = urlConn.getInputStream();
+	    rd = new BufferedReader(new InputStreamReader(in, "utf-8"));
+	    String tmps = null;
+	    while ((tmps = rd.readLine()) != null) {
+		tempStr.append(tmps.trim());
+	    }
+	} catch (MalformedURLException e) {
+	    e.printStackTrace();
+	    return ERROR;
+	} catch (IOException e) {
+	    e.printStackTrace();
+	    return ERROR;
+	} finally {
+	    if (rd != null) {
+		try {
+		    rd.close();
+		} catch (IOException e) {
+
+		    e.printStackTrace();
+		}
+	    }
+
+	    if (in != null) {
+		try {
+		    in.close();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	    }
+	    if (urlConn != null)
+		urlConn.disconnect();
+	}
+	return tempStr.toString();
+    }
+
+    /**
+     * 向上送状态报告
+     * 
+     * @param url
+     * @param appid
+     * @param appsecret
+     * @param taskid
+     * @param mobile
+     * @param state
+     * @param errorcode
+     * @param ismgmsgid
+     * @return
+     */
+    public static String postStatus1(String url, String appsecret, String taskid, String mobile, int state,
+	    String errorcode, String ismgmsgid) {
+	StringBuffer sb = new StringBuffer("");
+	sb.append("taskid=").append(taskid);
+	sb.append("&mobile=").append(mobile);
+	sb.append("&state=").append(state);
+	sb.append("&errorcode=").append(errorcode);
+	sb.append("&ismgmsgid=").append(ismgmsgid);
+	String s = taskid + mobile + state + errorcode + ismgmsgid;
+	String sign = Md5.MD5(s + appsecret);
+	// System.out.println("秘钥：：：" + appsecret + ",," + s);
+	sb.append("&sign=").append(sign);
+	return sendRequest(url, sb.toString());
+    }
+
+    /**
+     * 向上送状态报告
+     * 
+     * @param url
+     * @param appid
+     * @param appsecret
+     * @param taskid
+     * @param mobile
+     * @param state
+     * @param errorcode
+     * @param ismgmsgid
+     * @return
+     */
+    public static String postStatus(String url, String appsecret, String taskid, String mobile, int state,
+	    String errorcode, String ismgmsgid) {
+	StringBuffer sb = new StringBuffer("");
+	sb.append("taskid=").append(taskid);
+	sb.append("&mobile=").append(mobile);
+	sb.append("&state=").append(state);
+	sb.append("&errorcode=").append(errorcode);
+	sb.append("&ismgmsgid=").append(ismgmsgid);
+	String s = taskid + mobile + state + errorcode + ismgmsgid;
+	String sign = Md5.MD5(s + appsecret);
+	// System.out.println("秘钥：：：" + appsecret + ",," + s);
+	sb.append("&sign=").append(sign);
+	return sendRequest(url, sb.toString());
+
+    }
+
+    /**
+     * r 发送mo
+     * 
+     * @param unitid
+     * @param username
+     * @param passwd
+     * @param spnumber
+     * @param msg
+     * @param phone
+     * @param uptime
+     * @return
+     */
+    public static String postMo1(String url, String appsecret, String msgid, String mobile, String servicenumber,
+	    String msg, String uptime) {
+	StringBuffer sb = new StringBuffer("");
+	sb.append("mobile=").append(mobile);
+	sb.append("&servicenumber=").append(servicenumber);
+	sb.append("&msgid=").append(msgid);
+	sb.append("&msg=").append(msg);
+	sb.append("&uptime=").append(uptime);
+
+	String s = msgid + mobile + servicenumber + msg + uptime;
+	String sign = Md5.MD5(s + appsecret);
+	sb.append("&sign=").append(sign);
+
+	return sendRequest(url, sb.toString());
+    }
+
+    /**
+     * r 发送mo
+     * 
+     * @param unitid
+     * @param username
+     * @param passwd
+     * @param spnumber
+     * @param msg
+     * @param phone
+     * @param uptime
+     * @return
+     */
+    public static String postMo(String url, String appsecret, String msgid, String mobile, String servicenumber,
+	    String msg, String uptime) {
+	StringBuffer sb = new StringBuffer("");
+	sb.append("mobile=").append(mobile);
+	sb.append("&servicenumber=").append(servicenumber);
+	sb.append("&msgid=").append(msgid);
+	sb.append("&msg=").append(msg);
+	sb.append("&uptime=").append(uptime);
+
+	String s = msgid + mobile + servicenumber + msg + uptime;
+	String sign = Md5.MD5(s + appsecret);
+	// System.out.println("秘钥：：：" + appsecret + ",," + s);
+
+	sb.append("&sign=").append(sign);
+
+	return sendRequest(url, sb.toString());
+    }
+
+    public static String sendsms1(String mobile, String content) {
+	String result = "";
+	try {
+	    StringBuffer sb = new StringBuffer("");
+	    sb.append("act=sendmsg");
+	    sb.append("&unitid=").append(appid);
+	    sb.append("&username=").append(appname);
+	    sb.append("&passwd=").append(Md5.MD5(appsecret));
+	    sb.append("&phone=").append(mobile);
+	    sb.append("&msg=").append(content);
+	    sb.append("&port=");
+	    sb.append("&sendtime=");
+	    result = sendRequest(appurl, sb.toString());
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	return result;
+    }
+
+    public static String sendsms(String mobile, String content) {
+	String result = "";
+	try {
+	    content = "【惠州市人防办】" + content;
+	    StringBuffer sb = new StringBuffer("");
+	    sb.append("appid=").append(APPID);
+	    sb.append("&mobile=").append(mobile);
+	    sb.append("&msg=").append(content);
+	    String sign = Md5.MD5(APPID + mobile + content + APPKEY);
+	    sb.append("&sign=").append(sign);
+	    result = sendRequest(URL, sb.toString());
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	return result;
+    }
+
+    public static void main(String[] args) {
+	String mobile = "18819698848";
+	String content = "测试短信1234567890";
+
+	System.out.println(SMSUtil.sendsms(mobile, content));
+    }
+
+}

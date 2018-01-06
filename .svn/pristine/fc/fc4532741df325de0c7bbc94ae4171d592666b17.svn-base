@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<tlib-version>1.0</tlib-version>
+	<short-name>pert</short-name>
+	<function>
+		<description>权限判断</description>
+		<name>hasperti</name>
+		<function-class>com.zhilian.util.Permit</function-class>
+		<function-signature>boolean haspermit(java.lang.Integer, java.lang.String)</function-signature>
+		<example>${pert:hasperti(obj1, obj2)}</example>
+	</function>
+	<function>
+		<description>权限判断</description>
+		<name>hasperts</name>
+		<function-class>com.zhilian.util.Permit</function-class>
+		<function-signature>boolean haspermit(java.lang.String, java.lang.String)</function-signature>
+		<example>${pert:hasperts(obj1, obj2)}</example>
+	</function>
+	<function>
+		<description>时间判断</description>
+		<name>before</name>
+		<function-class>com.zhilian.util.DateUtils</function-class>
+		<function-signature>boolean isNowBefore(java.util.Date)</function-signature>
+		<example>${pert:before(obj1)}</example>
+	</function>
+	<function>
+		<description>时间判断</description>
+		<name>after</name>
+		<function-class>com.zhilian.util.DateUtils</function-class>
+		<function-signature>boolean isNowAfter(java.util.Date)</function-signature>
+		<example>${pert:after(obj1)}</example>
+	</function>
+	<function>
+		<description>管辖区域判断</description>
+		<name>adminarea</name>
+		<function-class>com.zhilian.util.Permit</function-class>
+		<function-signature>boolean isAdminArea(java.lang.Integer, java.lang.Integer)</function-signature>
+		<example>${pert:adminarea(obj1, obj2)}</example>
+	</function>
+</taglib>

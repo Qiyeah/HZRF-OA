@@ -1,0 +1,72 @@
+package com.oa.model.approve;
+
+import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+
+public class T_Leave_Approve extends Model<T_Leave_Approve> {
+
+    private static final long serialVersionUID = 1L;
+    public static final T_Leave_Approve dao = new T_Leave_Approve();
+
+    /** 统计某人某年某休假天数 */
+    public int statLeave(int userid, String year, String type) {
+	int result = 0;
+	try {
+	    String sql = "select sum(days) as days from t_leave_approve where u_id=" + userid + " and begindate>='"
+		    + year + "-01-01' and begindate<='" + year + "-12-31' and type='" + type
+		    + "' and (pstatus='1' or pstatus='2')";
+	    System.out.println(sql);
+	    Record rd = Db.findFirst(sql);
+	    if (rd != null && rd.getInt("days") != null) {
+		result = rd.getInt("days");
+
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	return result;
+    }
+
+    /**
+     * 根据pid获取请休假详情
+     * 
+     * @param pid
+     * @return
+     */
+    public T_Leave_Approve findByPid(int pid) {
+	String sql = "select * from t_leave_approve where pid = " + pid;
+	return dao.findFirst(sql);
+    }
+
+    /**
+     * 获取请休假详细列表
+     * 
+     * @param id
+     * @return
+     */
+    public T_Leave_Approve getLeaveDetail(int id) {
+	return dao.findFirst("select a.* from t_leave_approve a where a.id=" + id);
+    }
+
+    /**
+     * 根据用户ID获取本人请休假列表
+     * 
+     * @param userid
+     *            用户ID
+     * 
+     * @return
+     */
+    public Page<T_Leave_Approve> getListByUserId(Integer userid, String condition, int pageNumber, int pageSize) {
+	String select = "select * ";
+	String sqlExceptSelect = " FROM t_inner_send WHERE u_id=" + userid + " ";
+	if (StrKit.notBlank(condition)) {
+	    sqlExceptSelect += " and type like '%" + condition + "%' ";
+	}
+	sqlExceptSelect += " order by approveDate desc";
+	return dao.paginate(pageNumber, pageSize, select, sqlExceptSelect);
+    }
+
+}
